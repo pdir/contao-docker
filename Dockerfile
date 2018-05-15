@@ -15,7 +15,7 @@ RUN curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/lo
 RUN rm -rf /var/www/html/ && composer create-project contao/managed-edition /var/www/html/ '4.4.*'
 
 # Copy comolo default stuff
-COPY contao_default/app/config/parameters.yml /var/www/html/app/config
+COPY contao_default/app/config/parameters.yml /var/www/html/app/config/parameters.yml
 COPY contao_default/files /var/www/html/files
 COPY contao_default/templates /var/www/html/templates
 
