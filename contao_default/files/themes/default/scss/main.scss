@@ -1,0 +1,19 @@
+// Settings
+$grid-large-screen:false;
+
+// Comolo
+@import "comolo/eva/reset";
+@import "comolo/eva/grid";
+
+// Colors
+$color-black: #000;
+$color-white: #fff;
+
+// Paths
+$image-path: "/files/themes/default/img/";
+
+// Imports
+@import "_layout";
+@import "_navigation";
+@import "_content";
+@import "_mobile";

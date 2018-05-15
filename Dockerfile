@@ -9,22 +9,23 @@ RUN apt-get install -y nginx
 RUN apt-get install -y php php-dom php-gd php-curl php-intl php-mbstring php-mysql
 RUN apt-get install -y php-fpm
 RUN apt-get install -y supervisor
+RUN apt-get install -y mysql-client
 
 RUN curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
 RUN rm -rf /var/www/html/ && composer create-project contao/managed-edition /var/www/html/ '4.4.*'
 
+# Copy comolo default stuff
+COPY contao_default/app/config/parameters.yml /var/www/html/app/config
+COPY contao_default/files /var/www/html/files
+COPY contao_default/templates /var/www/html/templates
+
 # Add plugins
-# TODO: Add plugins
+RUN cd /var/www/html; composer require comolo/contao-supertheme
+RUN cd /var/www/html; composer require superlogin/contao-client "3.2.5"
+RUN cd /var/www/html; composer require comolo/contao-pageimage
 
-# Save database credentials
-RUN sed -i -e 's/database_host: localhost/database_host: mysql/g' /var/www/html/app/config/parameters.yml
-RUN sed -i -e 's/database_user: null/database_user: root/g' /var/www/html/app/config/parameters.yml
-RUN sed -i -e 's/database_password: null/database_password: mypass/g' /var/www/html/app/config/parameters.yml
-RUN sed -i -e 's/database_name: null/database_name: contao/g' /var/www/html/app/config/parameters.yml
-
-# Clear symfony cache
-RUN php /var/www/html/bin/console cache:clear --env=prod
-RUN php /var/www/html/bin/console cache:clear --env=dev
+# Import sql dump
+RUN mysql -u root -pmypass contao < /var/www/html/templates/default.sql; exit 0
 
 # Fix permissions
 RUN chown -R www-data:www-data /var/www/html
