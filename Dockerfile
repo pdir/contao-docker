@@ -17,10 +17,10 @@ RUN rm -rf /var/www/html/ && composer create-project contao/managed-edition /var
 # TODO: Add plugins
 
 # Save database credentials
-sed -i -e 's/database_host: localhost/database_host: mysql/g' /var/www/html/app/config/parameters.yml
-sed -i -e 's/database_user: null/database_user: root/g' /var/www/html/app/config/parameters.yml
-sed -i -e 's/database_password: null/database_password: mypass/g' /var/www/html/app/config/parameters.yml
-sed -i -e 's/database_name: null/database_name: contao/g' /var/www/html/app/config/parameters.yml
+RUN sed -i -e 's/database_host: localhost/database_host: mysql/g' /var/www/html/app/config/parameters.yml
+RUN sed -i -e 's/database_user: null/database_user: root/g' /var/www/html/app/config/parameters.yml
+RUN sed -i -e 's/database_password: null/database_password: mypass/g' /var/www/html/app/config/parameters.yml
+RUN sed -i -e 's/database_name: null/database_name: contao/g' /var/www/html/app/config/parameters.yml
 
 # Clear symfony cache
 RUN php /var/www/html/bin/console cache:clear --env=prod
