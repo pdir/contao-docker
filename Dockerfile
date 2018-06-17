@@ -48,4 +48,4 @@ RUN chown -R www-data:www-data /var/www/html/scripts
 RUN chmod +x /var/www/html/scripts/install-dev.php
 
 # Fix permissions
-#RUN chown -R www-data:www-data /var/www/html
+RUN chown -R www-data:www-data /var/www/html
