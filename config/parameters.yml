@@ -1,6 +1,6 @@
 # This file has been auto-generated during installation
 parameters:
-    database_host: db
+    database_host: mysql
     database_port: 3306
     database_user: root
     database_password: '%env(DEFAULT_PASSWORD)%'

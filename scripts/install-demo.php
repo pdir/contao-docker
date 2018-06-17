@@ -19,13 +19,14 @@ if ($comparableContaoVersion >= 450) {
 echo "Demo data version: {$versionToUseForDemoData}\n";
 
 echo "Setting up db with demo data\n";
+
 try {
-    $dsn = "mysql:host=localhost";
+    $dsn = "mysql:host=mysql";
     $pdo = new PDO($dsn, "root", getenv('DEFAULT_PASSWORD'));
 
-    $pdo->query("CREATE DATABASE IF NOT EXISTS ${".getenv('PROJECT_NAME')."}");
+    $pdo->query("CREATE DATABASE IF NOT EXISTS " . getenv('PROJECT_NAME'));
 
-    $pdo->query("USE ${".getenv('PROJECT_NAME')."}");
+    $pdo->query("USE " . getenv('PROJECT_NAME'));
 
     $demoSql = file_get_contents("/var/www/html/data/demo/contao-demo-{$versionToUseForDemoData}.sql");
     $pdo->exec($demoSql);
@@ -34,6 +35,8 @@ try {
 } catch (PDOException $e) {
     echo "Db Error:\n {$e->getMessage()}\n\n";
 }
+
+passthru("chown -R www-data:www-data /tmp");
 
 echo "Installing media files\n";
 passthru("cp -r /var/www/html/data/demo/files/* /var/www/html/files/");

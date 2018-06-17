@@ -19,7 +19,8 @@ RUN rm -rf /var/www/html/ && composer create-project contao/managed-edition:$CON
 
 # Link the console cmd
 RUN mkdir /var/www/html/bin \
-    && ln -s ./../vendor/bin/contao-console bin/console
+    && ln -s /var/www/html/vendor/bin/contao-console /var/www/html/bin/console \
+    && chown -R www-data:www-data /var/www/html/bin/console
 
 # Install Contao Manager
 RUN curl -o /var/www/html/web/contao-manager.php -L https://download.contao.org/contao-manager.phar
@@ -48,4 +49,5 @@ RUN chown -R www-data:www-data /var/www/html/scripts
 RUN chmod +x /var/www/html/scripts/install-dev.php
 
 # Fix permissions
+RUN chmod -R 0777 /tmp && chown -R www-data:www-data /tmp
 RUN chown -R www-data:www-data /var/www/html

@@ -26,8 +26,8 @@ Once you're up and running, you'll arrive at the configuration wizard page. At t
 
 - Host: `mysql`
 - Login: `root`
-- Password: `mypass`
-- Database Name: `contao`
+- Password: `password`
+- Database Name: `project`
 
 Contao Demo
 ---
