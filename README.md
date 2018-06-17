@@ -1,7 +1,7 @@
 Docker Contao
 ===
 
-Contao Open Source CMS
+A Docker Compose setup for Contao Open Source CMS
 
 Quick Start
 ---
@@ -29,10 +29,24 @@ Once you're up and running, you'll arrive at the configuration wizard page. At t
 - Password: `mypass`
 - Database Name: `contao`
 
+Contao Demo
+---
+
+* The install tool password for the demo is contaodocker
+
+Contao Manager
+---
+This setup also provides the Contao Manager. You can access it via calling http://127.0.0.1/contao-manager.php
+
 License
 ---
 
 MIT
 
+Special Thanks
+--------------
 
-**Free Software, Hell Yeah!**
+Medialta https://github.com/medialta/docker-contao
+Comolo https://github.com/comolo/contao-docker
+CTSMEDIA https://github.com/ctsmedia/docker-contao
+

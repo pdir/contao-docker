@@ -2,6 +2,8 @@ FROM ubuntu:xenial
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV INITRD No
+# Set it to a fix version number if you want to run a specific version
+ARG CONTAO_VERSION=~4.4
 
 RUN apt-get update
 RUN apt-get install -y curl zip unzip
@@ -12,31 +14,31 @@ RUN apt-get install -y supervisor
 RUN apt-get install -y mysql-client
 
 RUN curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
-RUN rm -rf /var/www/html/ && composer create-project contao/managed-edition /var/www/html/ '4.4.*'
+RUN rm -rf /var/www/html/ && composer create-project contao/managed-edition:$CONTAO_VERSION /var/www/html/
 
-# Copy comolo default stuff
-COPY contao_default/app/config/parameters.yml /var/www/html/app/config/parameters.yml
-COPY contao_default/files /var/www/html/files
-COPY contao_default/templates /var/www/html/templates
-
-# Add plugins
-RUN cd /var/www/html; composer require comolo/contao-supertheme
-RUN cd /var/www/html; composer require superlogin/contao-client "3.2.5"
-RUN cd /var/www/html; composer require comolo/contao-pageimage
-
-# Import sql dump
-RUN mysql -u root -pmypass contao < /var/www/html/templates/default.sql; exit 0
-
-# Fix permissions
-RUN chown -R www-data:www-data /var/www/html
+# Install Contao Manager
+RUN curl -o web/contao-manager.php -L https://download.contao.org/contao-manager.phar
 
 # Supervisor
 RUN mkdir -p /var/log/supervisor /run/php
-COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-COPY nginx.conf /etc/nginx/sites-enabled/default
+COPY build/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY build/nginx.conf /etc/nginx/sites-enabled/default
 
 EXPOSE 80
 WORKDIR /var/www/html
 HEALTHCHECK CMD curl --fail http://localhost/ || exit 1
 
 CMD ["/usr/bin/supervisord", "-n"]
+
+# Add config, demo and deploy scripts
+ADD config /var/www/html/data/config
+ADD contao_demo /var/www/html/data/demo
+ADD scripts /var/www/html/data/scripts
+RUN chmod -R 0777 /var/www/html/data/
+RUN chown -R www-data:www-data /var/www/html/data/
+
+#Install dev
+RUN chmod +x /var/www/html/data/sscripts/install-dev.php
+
+# Fix permissions
+RUN chown -R www-data:www-data /var/www/html

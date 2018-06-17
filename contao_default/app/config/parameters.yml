@@ -1,8 +1,0 @@
-# This file has been auto-generated during installation
-parameters:
-    database_host: localhost
-    database_port: 3306
-    database_user: root
-    database_password: mypass
-    database_name: contao
-    secret: 28d3f4a4db0ebebccc199ea1913f8d643ccec68c3dc90e53d79462f641gfefa8

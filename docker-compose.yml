@@ -4,8 +4,10 @@ mysql:
         MYSQL_DATABASE: contao
         MYSQL_ROOT_PASSWORD: mypass
 contao:
-    image: comolo/contao-docker
+    image: pdir/contao-docker
     links: 
         - "mysql:mysql"
     ports:
         - "80:80"
+    volumes:
+        - ./workspace:/var/www/html/src:ro
