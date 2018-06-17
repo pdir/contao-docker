@@ -32,11 +32,23 @@ Once you're up and running, you'll arrive at the configuration wizard page. At t
 Contao Demo
 ---
 
+    docker exec --user www-data PROJECT_NAME_contao_1 bash -c "php scripts/install-demo.php"
+
 * The install tool password for the demo is contaodocker
 
 Contao Manager
 ---
 This setup also provides the Contao Manager. You can access it via calling http://127.0.0.1/contao-manager.php
+
+Console
+---
+
+    docker exec -i -t PROJECT_NAME_contao_1 /bin/bash
+
+Deploy to ALLINKL
+---
+
+    docker exec --user www-data PROJECT_NAME_contao_1 bash -c "php scripts/deploy-allinkl.php"
 
 License
 ---

@@ -18,29 +18,16 @@ if ($comparableContaoVersion >= 450) {
 }
 echo "Demo data version: {$versionToUseForDemoData}\n";
 
-echo "Preparing config\n";
-copy("/var/www/html/data/config/localconfig.php", "/var/www/html/system/config/localconfig.php");
-chmod("/var/www/html/system/config/localconfig.php", 0777);
-passthru("chown www-data:www-data /var/www/html/system/config/localconfig.php");
-
-if (!is_dir("/var/www/html/app/config")) {
-    mkdir("/var/www/html/app/config/", 0777, true);
-    chmod("/var/www/html/app/config/", 0777);
-}
-copy("/var/www/html/data/config/parameters.yml", "/var/www/html/app/config/parameters.yml");
-chmod("/var/www/html/app/config/parameters.yml", 0777);
-passthru("chown www-data:www-data /var/www/html/app/config/parameters.yml");
-
 echo "Setting up db with demo data\n";
 try {
-    $dsn = "mysql:host=db";
-    $pdo = new PDO($dsn, "root", $_ENV['DEFAULT_PASSWORD']);
+    $dsn = "mysql:host=localhost";
+    $pdo = new PDO($dsn, "root", getenv('DEFAULT_PASSWORD'));
 
-    $pdo->query("CREATE DATABASE IF NOT EXISTS ${_ENV['PROJECT_NAME']}");
+    $pdo->query("CREATE DATABASE IF NOT EXISTS ${".getenv('PROJECT_NAME')."}");
 
-    $pdo->query("USE ${_ENV['PROJECT_NAME']}");
+    $pdo->query("USE ${".getenv('PROJECT_NAME')."}");
 
-    $demoSql = file_get_contents("/var/www/share/data/demo/contao-demo-{$versionToUseForDemoData}.sql");
+    $demoSql = file_get_contents("/var/www/html/data/demo/contao-demo-{$versionToUseForDemoData}.sql");
     $pdo->exec($demoSql);
 
 
@@ -49,7 +36,7 @@ try {
 }
 
 echo "Installing media files\n";
-passthru("cp -r /var/www/share/data/demo/files/* /var/www/html/files/");
+passthru("cp -r /var/www/html/data/demo/files/* /var/www/html/files/");
 
 echo "Setting permissions\n";
 passthru("chown -R www-data:www-data /var/www/html/files/contaodemo");
