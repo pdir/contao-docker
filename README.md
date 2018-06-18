@@ -6,15 +6,20 @@ A Docker Compose setup for Contao Open Source CMS
 Quick Start
 ---
 
+copy docker-compose.yml and .env.example to your project folder
+rename .env.example to .env and edit parameter if needed
+and run
 ```
-docker run -d --name mysql -e MYSQL_ROOT_PASSWORD=mypass -e MYSQL_DATABASE=contao mysql
-docker run -d --name contao -p 80:80 --link mysql:mysql medialta/docker-contao
+docker-compose up -d
 ```
 
 --or--
 
+checkout the whole repository
+and run
 ```
-docker-compose up -d
+docker run -d --name mysql -e MYSQL_ROOT_PASSWORD=mypass -e MYSQL_DATABASE=contao mysql
+docker run -d --name contao -p 80:80 --link mysql:mysql medialta/docker-contao
 ```
 
 Point your browser to `http://127.0.0.1`
@@ -49,6 +54,18 @@ Deploy to ALLINKL
 ---
 
     docker exec --user www-data PROJECT_NAME_contao_1 bash -c "php scripts/deploy-allinkl.php"
+
+Ectension Development
+---
+
+1. Develop your bundle in workspace
+2.      docker exec --user www-data PROJECT_NAME_contao_1 bash -c "composer config repositories.BUNDLENAME path ../workspace"
+3.      docker exec --user www-data PROJECT_NAME_contao_1 bash -c "composer require VENDOR/BUNDLENAME:*"
+    OR
+1. Add new volume to docker-composer.yml, maybe root
+2.      - ./:/var/www/html/src:ro
+3.      docker exec --user www-data PROJECT_NAME_contao_1 bash -c "composer config repositories.BUNDLENAME path ../workspace"
+4.      docker exec --user www-data PROJECT_NAME_contao_1 bash -c "composer require VENDOR/BUNDLENAME:*"
 
 License
 ---

@@ -12,7 +12,7 @@ RUN apt-get install -y php php-dom php-gd php-curl php-intl php-mbstring php-mys
 RUN apt-get install -y php-fpm
 RUN apt-get install -y supervisor
 RUN apt-get install -y mysql-client
-RUN apt-get install -y vim rsync
+RUN apt-get install -y vim rsync git
 
 RUN curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
 RUN rm -rf /var/www/html/ && composer create-project contao/managed-edition:$CONTAO_VERSION /var/www/html/
